@@ -1,3 +1,0 @@
-/home/eduardo/Documents/croper/build/CMakeFiles/edit_cache.dir
-/home/eduardo/Documents/croper/build/CMakeFiles/croper.dir
-/home/eduardo/Documents/croper/build/CMakeFiles/rebuild_cache.dir
