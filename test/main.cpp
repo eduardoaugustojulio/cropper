@@ -103,7 +103,7 @@ int main(const int argc, const char **args)
     cv::setNumThreads(4);
 
     std::string url(args[1]);
-    std::string command("wget " + url + " -O webcam.jpg");
+    std::string command("wget " + url + " -O camera.jpeg");    
     system(command.c_str());
 
     cout<<"Click and drag for Selection"<<endl<<endl;
@@ -129,7 +129,7 @@ int main(const int argc, const char **args)
     cout<<"------> Press 'Esc' to quit"<<endl<<endl;
 
 
-    src=imread("webcam.jpg", cv::IMREAD_COLOR);
+    src=imread("camera.jpeg", cv::IMREAD_COLOR);
     namedWindow(winName,WINDOW_NORMAL);
     setMouseCallback(winName,onMouse,NULL);
     imshow(winName,src);
@@ -137,9 +137,8 @@ int main(const int argc, const char **args)
     while(1){
         char c=waitKey();
         if(c=='s'&&ROI.data){
-            sprintf(imgName,"%d.jpg",i++);
-            imwrite(imgName,ROI);
-            cout<<"  Saved "<<imgName<<endl;
+            imwrite("imagedefault.jpeg",ROI);
+            cout<<"  Saved "<< "imagedefault.jpeg" <<endl;
         }
         if(c=='m' && ROI.data)
             imshow("cropped",ROI);
