@@ -18,7 +18,6 @@ char imgName[15];
 
 
 void checkBoundary(){
-    //check croping rectangle exceed image boundary
     if(cropRect.width>img.cols-cropRect.x)
         cropRect.width=img.cols-cropRect.x;
 
@@ -37,7 +36,6 @@ void showImage(){
     checkBoundary();
     if(cropRect.width>0&&cropRect.height>0){
         ROI=src(cropRect);
-        imshow("cropped",ROI);
     }
 
     rectangle(img, cropRect, Scalar(0,255,0), 4, 8, 0 );
@@ -91,27 +89,25 @@ void onMouse( int event, int x, int y, int f, void* ){
 
     }
 
-
     showImage();
-
-
 }
 
-inline bool existsFile (const std::string& name) {
-    ifstream f(name.c_str());
-    return f.good();
-}
 int main(const int argc, const char **args)
 {
     if(argc < 2){
-        cout << "usage: " << args[0] << " {image}" << std::endl;
-        return -1;
-    }else if(!existsFile(args[1])){
-        cout << "image dosent exist" << std::endl;
+        cout << "usage: " << args[0] << "{image}" << std::endl;
         return -1;
     }
 
+    cv::setUseOptimized(true);
+    cv::setNumThreads(4);
+
+    std::string url(args[1]);
+    std::string command("wget " + url + " -O webcam.jpg");
+    system(command.c_str());
+
     cout<<"Click and drag for Selection"<<endl<<endl;
+    cout<<"------> Press 'm' to to show"<<endl;
     cout<<"------> Press 's' to save"<<endl<<endl;
 
     cout<<"------> Press '8' to move up"<<endl;
@@ -133,8 +129,7 @@ int main(const int argc, const char **args)
     cout<<"------> Press 'Esc' to quit"<<endl<<endl;
 
 
-    src=imread(args[1], 1);
-
+    src=imread("webcam.jpg", cv::IMREAD_COLOR);
     namedWindow(winName,WINDOW_NORMAL);
     setMouseCallback(winName,onMouse,NULL);
     imshow(winName,src);
@@ -146,7 +141,10 @@ int main(const int argc, const char **args)
             imwrite(imgName,ROI);
             cout<<"  Saved "<<imgName<<endl;
         }
-          if(c=='6') cropRect.x++;
+        if(c=='m' && ROI.data)
+            imshow("cropped",ROI);
+
+        if(c=='6') cropRect.x++;
         if(c=='4') cropRect.x--;
         if(c=='8') cropRect.y--;
         if(c=='2') cropRect.y++;
