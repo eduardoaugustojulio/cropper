@@ -95,7 +95,7 @@ void onMouse( int event, int x, int y, int f, void* ){
 int main(const int argc, const char **args)
 {
     if(argc < 2){
-        cout << "usage: " << args[0] << "{image}" << std::endl;
+        cout << "usage: " << args[0] << " {image} " << " {intput name} " << std::endl;
         return -1;
     }
 
@@ -103,7 +103,8 @@ int main(const int argc, const char **args)
     cv::setNumThreads(4);
 
     std::string url(args[1]);
-    std::string command("wget " + url + " -O camera.jpeg");    
+    std::string download_file(args[2]);
+    std::string command("wget " + url + " -O " + download_file);
     system(command.c_str());
 
     cout<<"Click and drag for Selection"<<endl<<endl;
@@ -129,10 +130,12 @@ int main(const int argc, const char **args)
     cout<<"------> Press 'Esc' to quit"<<endl<<endl;
 
 
-    src=imread("camera.jpeg", cv::IMREAD_COLOR);
+    src=imread(download_file, cv::IMREAD_COLOR);
     namedWindow(winName,WINDOW_NORMAL);
     setMouseCallback(winName,onMouse,NULL);
-    imshow(winName,src);
+
+    if(!src.empty())
+        imshow(winName,src);
 
     while(1){
         char c=waitKey();
@@ -157,7 +160,7 @@ int main(const int argc, const char **args)
         if(c=='h') cropRect.width--;
         if(c=='b') cropRect.height--;
         if(c=='f') { cropRect.x++; cropRect.width--;}
-        
+
         if(c==27) break;
         if(c=='r') {cropRect.x=0;cropRect.y=0;cropRect.width=0;cropRect.height=0;}
         showImage();

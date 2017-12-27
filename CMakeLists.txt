@@ -8,7 +8,15 @@ set(SRCS_PATH		"${PROJECT_PATH}/src")
 set(LIB_INCLUDE_DIR	"${PROJECT_PATH}/include" CACHE	INTERNAL "directories")
 include_directories(${LIB_INCLUDE_DIR})
 
-find_package(OpenCV REQUIRED HINTS "/home/eduardo/opencv/build-arm/")
+set(OPENCV_DEFAULT_LIB_PATH "")
+
+if( ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
+	message(STATUS "SET UP OPENCV TO ARM")
+        set(OPENCV_DEFAULT_LIB_PATH "/home/eduardo/opencv/build-arm/")
+
+endif()
+
+find_package(OpenCV REQUIRED HINTS ${OPENCV_DEFAULT_LIB_PATH})
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
