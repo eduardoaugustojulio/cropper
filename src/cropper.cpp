@@ -12,7 +12,28 @@
 
 #include    "cropper.h"
 
-Cropper::Cropper(std::string input, std::string output)
+Cropper::Cropper(std::string input1, std::string input2)
+{
+	cv::setUseOptimized(true);
+	cv::setNumThreads(4);
+
+	cv::Mat src1, src2, dts;
+
+	if(input1.empty() && input2.empty())
+	{
+		std::cout << "Passed empty file or dosent exist" << std::endl;
+		exit(-1);
+	}
+
+	src1 = cv::imread(input1, cv::IMREAD_GRAYSCALE);
+	src2 = cv::imread(input2, cv::IMREAD_GRAYSCALE);
+
+	cv::addWeighted( src1, 0.5, src2, 0.5, 0.0, dts);
+
+	this->run(dts);
+}
+
+Cropper::Cropper(std::string input)
 {
 	cv::setUseOptimized(true);
 	cv::setNumThreads(4);
@@ -25,8 +46,25 @@ Cropper::Cropper(std::string input, std::string output)
 	this->run(cv::imread(input, cv::IMREAD_GRAYSCALE));
 }
 
+
+
+Cropper::Cropper(cv::Mat &src1, cv::Mat &src2)
+{
+	cv::Mat dst;
+
+	cv::setUseOptimized(true);
+	cv::setNumThreads(4);
+
+	cv::addWeighted( src1, 0.5, src2, 0.5, 0.0, dst);
+	this->run(dst);
+}
+
+
 Cropper::Cropper(cv::Mat &img)
 {
+	cv::setUseOptimized(true);
+	cv::setNumThreads(4);
+
 	this->run(img);
 }
 

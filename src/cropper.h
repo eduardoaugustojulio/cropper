@@ -19,8 +19,11 @@
 
 class Cropper{
 public:
-    Cropper(std::string input = "", std::string output = "");
+	Cropper(std::string input1);
+	Cropper(std::string input1, std::string input2);
+	Cropper(cv::Mat &src1, cv::Mat &src2);
 	Cropper(cv::Mat &img);
+
 	void run(cv::Mat img);
     ~Cropper();
 
