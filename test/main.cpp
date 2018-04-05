@@ -22,24 +22,26 @@ int get_image(const int argc, const char **argv)
 
 int get_video(const int argc, const char **argv)
 {
-	cv::VideoCapture cap(0);
+	if(argc < 2){
+		std::cout << "usage: " << argv[0] << " {camera url}" << std::endl;
+		return EXIT_FAILURE;
+	}
+
+	cv::VideoCapture cap(argv[1]);
 
 	if(!cap.isOpened())
 		return -1;
 
 	cv::Mat frame;
-	for(;;){
-
-		cap >> frame;
+	if(cap.read(frame))
 		Cropper c(frame);
-	}
 
 	return EXIT_SUCCESS;
 }
 
 int main(const int argc, const char **argv)
 {
-	get_image(argc, argv);
-	//get_video(argc, argv);
+	//get_image(argc, argv);
+	get_video(argc, argv);
 	return EXIT_SUCCESS;
 }

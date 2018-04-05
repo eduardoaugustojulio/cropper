@@ -14,7 +14,6 @@ set(OPENCV_DEFAULT_LIB_PATH "")
 if( ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
         message(STATUS "SET UP OPENCV TO ARM")
         set(OPENCV_DEFAULT_LIB_PATH "/home/eduardo/opencv/build-arm/")
-
 endif()
 
 file(GLOB SRCS
@@ -29,9 +28,6 @@ link_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_executable("${PROJECT_NAME}-test-old" "${TEST_PATH}/old-main.cpp")
 target_link_libraries("${PROJECT_NAME}-test-old" ${OpenCV_LIBS})
 
-add_library(${PROJECT_NAME} SHARED ${SRCS})
-target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
-
-add_executable("${PROJECT_NAME}-test" "${TEST_PATH}/main.cpp")
-target_link_libraries("${PROJECT_NAME}-test" ${OpenCV_LIBS} cropper)
+add_executable(cropper "${TEST_PATH}/main.cpp" ${SRCS})
+target_link_libraries(cropper ${OpenCV_LIBS})
 
